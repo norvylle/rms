@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Segment,Header,Icon,Input,Button} from 'semantic-ui-react';
 
 class App extends Component {
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+           <Header as='h3' icon textAlign='center'>
+            <Icon name='database' circular/>
+            <Header.Content>
+              Records Management System
+            </Header.Content>
+            <br/><br/>
+          </Header>
+        <Segment padded="very" inverted>
+          <br/><br/><br/><br/>
+          <Input placeholder="Username" size="big"/>
+          <br/><br/>
+          <Input placeholder="Password" size="big" type="password"/>
+          <br/><br/>
+          <Button size="big" primary>Login</Button>
+          <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        </Segment>
       </div>
     );
   }
