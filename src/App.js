@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import {BrowserRouter as Router,Route} from 'react-router-dom';
 import './App.css';
-import {Segment,Header,Icon,Input,Button} from 'semantic-ui-react';
+import {Segment,Header,Icon} from 'semantic-ui-react';
+import Login from './components/Login';
+import Home from './components/Home';
+import ViewAll from './components/ViewAll';
 
 class App extends Component {
-
   render() {
     return (
       <div className="App">
@@ -14,15 +17,17 @@ class App extends Component {
             </Header.Content>
             <br/><br/>
           </Header>
-        <Segment padded="very" inverted>
-          <br/><br/><br/><br/>
-          <Input placeholder="Username" size="big"/>
-          <br/><br/>
-          <Input placeholder="Password" size="big" type="password"/>
-          <br/><br/>
-          <Button size="big" primary>Login</Button>
-          <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-        </Segment>
+          <Segment padded="very" inverted>
+              <br/><br/>
+              <Router>
+              <div>
+                <Route exact={true} path="/" component={Login}/>
+                <Route exact={true} path="/user" component={Home}/>
+                <Route exact={true} path="/user/view-all" component={ViewAll}/>
+              </div>
+              </Router>
+              <br/><br/>
+          </Segment>
       </div>
     );
   }
