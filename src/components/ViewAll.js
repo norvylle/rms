@@ -8,19 +8,16 @@ class Home extends Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			course_no:[],
-			student_no:[],
-			last_name:[],
-			first_name:[],
-			college:[],
-			sem_year:[],
-			grade:[],
-			instructor:[],
-			remove_date:[],
-			remarks:[]
+			student:[],
 		}
 		autoBind(this);
 	}
+
+	componentDidMount() {
+		fetch('http://localhost:3001/viewall')
+      .then((response)=> {return response.json()})
+      .then((result) => {this.setState({student:result})})
+    }
 
   render() {
     return (
@@ -32,7 +29,7 @@ class Home extends Component {
 	          	</Table.Row>
 			</Table.Header>
 			<Table.Header>
-				<Table.Row>
+				<Table.Row textAlign="center">
 	          		<Table.HeaderCell>Course no.</Table.HeaderCell>
 	          		<Table.HeaderCell>Student no.</Table.HeaderCell>
 	          		<Table.HeaderCell>Last Name</Table.HeaderCell>
@@ -45,6 +42,22 @@ class Home extends Component {
 	          		<Table.HeaderCell>Remarks</Table.HeaderCell>
 	      		</Table.Row>
 			</Table.Header>
+			<Table.Body>
+			{this.state.student.map((item,index)=>{
+				return(<Table.Row key={index}>
+					<Table.Cell>{item.course_no}</Table.Cell>
+					<Table.Cell>{item.student_no}</Table.Cell>
+					<Table.Cell>{item.last_name}</Table.Cell>
+					<Table.Cell>{item.first_name}</Table.Cell>
+					<Table.Cell>{item.college}</Table.Cell>
+					<Table.Cell>{item.sem_year}</Table.Cell>
+					<Table.Cell>{item.grade}</Table.Cell>
+					<Table.Cell>{item.instructor}</Table.Cell>
+					<Table.Cell>{item.remove_date}</Table.Cell>
+					<Table.Cell>{item.remarks}</Table.Cell>
+				</Table.Row>)
+			})}
+			</Table.Body>
     	</Table>
 			<br/><br/>
 			<a href={oldURL}><Button content="Back" size="large" color="red"/><br/></a>
