@@ -16,7 +16,7 @@ exports.viewall = (req,res,next) => {
 }
 
 exports.search = (req,res,next) => {
-	var que = 'select * from removals where '+req.query.key+" like "+req.query.value+"%";
+	var que = 'select * from removals where '+req.query.key+" like '"+req.query.value+"%'";
 	c.query(que,[],(err,result) =>{
 		res.send(result);
 	});
