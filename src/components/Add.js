@@ -3,6 +3,32 @@ import {Button,Input,Table,Form} from 'semantic-ui-react';
 
 const autoBind = require('auto-bind');
 
+const initialState  = {
+            course_no:"",
+            student_no:"",
+            last_name:"",
+            first_name:"",
+            college:"",
+            sem_year:"",
+            grade:"",
+            instructor:"",
+            remove_date:"",
+            remarks:"",
+            dataset:[],
+            rowOptions:[
+                    {key:'course_no', text:'Course Number', value:'course_no'},
+                    {key:'student_no', text:'Student Number', value:'student_no'},
+                    {key:'last_name', text:'Last Name', value:'last_name'},
+                    {key:'first_name', text:'First Name', value:'first_name'},
+                    {key:'college', text:'College', value:'college'},
+                    {key:'sem_year', text:'Sem/Year', value:'sem_year'},
+                    {key:'grade', text:'Grade', value:'grade'},
+                    {key:'instructor', text:'Instructor', value:'instructor'},
+                    {key:'remove_date', text:'Remove Date', value:'remove_date'},
+                    {key:'remarks', text:'Remarks', value:'remarks'},
+            ]
+        }
+
 class Add extends Component {
 
     constructor(props){
@@ -55,6 +81,15 @@ class Add extends Component {
 
     handleRemarks(e){this.setState({remarks:e.target.value})}
 
+    reset(){
+        initialState.course_no = this.state.course_no
+        initialState.college = this.state.college
+        initialState.remove_date = this.state.remove_date
+        initialState.grade = "4.0-"
+        initialState.dataset = this.state.dataset
+        this.setState(initialState)
+    }
+
     handleInsert(e){
         if(this.state.course_no !== "" && this.state.student_no !== "" && this.state.last_name !== "" && this.state.first_name !== "" && this.state.college !== "" && this.state.sem_year !== "" && this.state.grade !== "" && this.state.instructor !== "" && this.state.remove_date && this.state.remarks !== ""){
             const data = {
@@ -71,6 +106,7 @@ class Add extends Component {
             }
 
         this.state.dataset.push(data)
+        this.reset()
         this.forceUpdate()
         }
         else{
@@ -82,8 +118,8 @@ class Add extends Component {
         var dataset = this.state.dataset
         if(dataset[0] !== undefined){
             dataset.forEach(function(item,index,array) {
-                fetch(`http://localhost:3001/insert?state=${encodeURIComponent(JSON.stringify(item))}`)
-                .then((response) => {})
+                fetch(`http://`+window.location.hostname+`:3001/insert?state=${encodeURIComponent(JSON.stringify(item))}`)
+                .then((response) => {return response.json()})
                 .then((result) => {})
             });
         alert("Insert Successful!")
@@ -99,7 +135,7 @@ class Add extends Component {
     <div>
         <Form onSubmit={this.handleInsert.bind(this)}>
             <Input placeholder="Course no." value={this.state.course_no} onChange={this.handleCourseNo}/>&nbsp;&nbsp;
-            <Input placeholder="Student no." defaultValue={this.state.student_no} onChange={this.handleStudentNo}/>&nbsp;&nbsp;
+            <Input placeholder="Student no." value={this.state.student_no} onChange={this.handleStudentNo}/>&nbsp;&nbsp;
             <Input placeholder="Last Name" value={this.state.last_name} onChange={this.handleLastName}/>&nbsp;&nbsp;
             <Input placeholder="First Name" value={this.state.first_name} onChange={this.handleFirstName}/>&nbsp;&nbsp;
             <Input placeholder="College" value={this.state.college} onChange={this.handleCollege}/><br/><br/>
