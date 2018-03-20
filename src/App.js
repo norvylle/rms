@@ -5,6 +5,7 @@ import {Segment,Header,Icon} from 'semantic-ui-react';
 import Login from './components/Login';
 import Home from './components/Home';
 import View from './components/View';
+import Add from './components/Add';
 
 class App extends Component {
   render() {
@@ -25,7 +26,7 @@ class App extends Component {
                 <Route exact={true} path="/user" component={Home}/>
                 <Route exact={true} path="/user/view" component={View}/>
                 
-                <Route exact={true} path="/user/add" component={Home}/>
+                <Route exact={true} path="/user/add" component={Add}/>
                 <Route exact={true} path="/user/edit" component={Home}/>
                 <Route exact={true} path="/user/delete" component={Home}/>
               </div>

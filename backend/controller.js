@@ -21,3 +21,12 @@ exports.search = (req,res,next) => {
 		res.send(result);
 	});
 }
+
+exports.insert = (req,res,next) => {
+	var data = JSON.parse(req.query.state);
+	
+	c.query('insert into removals (course_no, student_no, last_name, first_name, college, sem_year,remove_date, grade,instructor,remarks) values(?,?,?,?,?,?,?,?,?,?)',[data.course_no,data.student_no,data.last_name,data.first_name,data.college,data.sem_year,data.remove_date,data.grade,data.instructor,data.remarks],(err,result) =>{
+		// res.send(result);
+		console.log(err+" "+result)
+	});
+}
