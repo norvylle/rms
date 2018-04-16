@@ -28,7 +28,7 @@ class View extends Component {
 	}
 
     goFetch(value){
-    	fetch(`http://localhost:3001/search?key=${this.state.key}&value=${value}`)
+    	fetch('http://'+window.location.hostname+`:3001/search?key=${this.state.key}&value=${value}`)
       .then((response)=> {return response.json()})
       .then((result) => {console.log(result);this.setState({student:result});})
       this.forceUpdate();
@@ -49,7 +49,7 @@ class View extends Component {
     }
 
 	componentDidMount() {
-		fetch('http://localhost:3001/viewall')
+		fetch('http://'+window.location.hostname+':3001/viewall')
       .then((response)=> {return response.json()})
       .then((result) => {this.setState({student:result})})
     }

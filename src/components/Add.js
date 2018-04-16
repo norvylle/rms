@@ -3,6 +3,58 @@ import {Button,Input,Table,Form} from 'semantic-ui-react';
 
 const autoBind = require('auto-bind');
 
+var dataset = []
+
+const initialState  = {
+            course_no:"",
+            student_no:"",
+            last_name:"",
+            first_name:"",
+            college:"",
+            sem_year:"",
+            grade:"",
+            instructor:"",
+            remove_date:"",
+            remarks:"",
+            rowOptions:[
+                    {key:'course_no', text:'Course Number', value:'course_no'},
+                    {key:'student_no', text:'Student Number', value:'student_no'},
+                    {key:'last_name', text:'Last Name', value:'last_name'},
+                    {key:'first_name', text:'First Name', value:'first_name'},
+                    {key:'college', text:'College', value:'college'},
+                    {key:'sem_year', text:'Sem/Year', value:'sem_year'},
+                    {key:'grade', text:'Grade', value:'grade'},
+                    {key:'instructor', text:'Instructor', value:'instructor'},
+                    {key:'remove_date', text:'Remove Date', value:'remove_date'},
+                    {key:'remarks', text:'Remarks', value:'remarks'},
+                    {key:'delete', text:'Delete', value:'delete'},
+            ]
+        }
+
+class Delete extends Component{
+    constructor(props){
+        super(props)
+        this.state={
+            index:this.props.index,
+            component:this.props.component
+        }
+        autoBind(this)
+    }
+
+    handleClick(){
+        dataset.splice(this.state.index,1)
+        this.state.component.reset()
+    }
+
+    render(){
+        return(
+            <div>
+                <Button icon="delete" onClick={this.handleClick}></Button>
+            </div>
+        )
+    }
+}
+
 class Add extends Component {
 
     constructor(props){
@@ -18,7 +70,6 @@ class Add extends Component {
             instructor:"",
             remove_date:"",
             remarks:"",
-            dataset:[],
             rowOptions:[
                     {key:'course_no', text:'Course Number', value:'course_no'},
                     {key:'student_no', text:'Student Number', value:'student_no'},
@@ -30,6 +81,7 @@ class Add extends Component {
                     {key:'instructor', text:'Instructor', value:'instructor'},
                     {key:'remove_date', text:'Remove Date', value:'remove_date'},
                     {key:'remarks', text:'Remarks', value:'remarks'},
+                    {key:'delete', text:'Delete', value:'delete'},
             ]
         }
         autoBind(this);
@@ -55,6 +107,15 @@ class Add extends Component {
 
     handleRemarks(e){this.setState({remarks:e.target.value})}
 
+    reset(){
+        initialState.course_no = this.state.course_no
+        initialState.college = this.state.college
+        initialState.remove_date = this.state.remove_date
+        initialState.grade = "4.0-"
+        this.setState(initialState)
+        this.forceUpdate()
+    }
+
     handleInsert(e){
         if(this.state.course_no !== "" && this.state.student_no !== "" && this.state.last_name !== "" && this.state.first_name !== "" && this.state.college !== "" && this.state.sem_year !== "" && this.state.grade !== "" && this.state.instructor !== "" && this.state.remove_date && this.state.remarks !== ""){
             const data = {
@@ -70,8 +131,8 @@ class Add extends Component {
                 remarks:this.state.remarks
             }
 
-        this.state.dataset.push(data)
-        this.forceUpdate()
+        dataset.push(data)
+        this.reset()
         }
         else{
             alert("Please specify missing field/s !")
@@ -79,15 +140,15 @@ class Add extends Component {
     }
 
     handleInsertAll(){
-        var dataset = this.state.dataset
         if(dataset[0] !== undefined){
             dataset.forEach(function(item,index,array) {
-                fetch(`http://localhost:3001/insert?state=${encodeURIComponent(JSON.stringify(item))}`)
-                .then((response) => {})
+                fetch(`http://`+window.location.hostname+`:3001/insert?state=${encodeURIComponent(JSON.stringify(item))}`)
+                .then((response) => {return response.json()})
                 .then((result) => {})
             });
         alert("Insert Successful!")
-        this.setState({dataset:[]})
+        dataset = []
+        this.forceUpdate()
         }
         else{
             alert("Empty Table!")
@@ -99,7 +160,7 @@ class Add extends Component {
     <div>
         <Form onSubmit={this.handleInsert.bind(this)}>
             <Input placeholder="Course no." value={this.state.course_no} onChange={this.handleCourseNo}/>&nbsp;&nbsp;
-            <Input placeholder="Student no." defaultValue={this.state.student_no} onChange={this.handleStudentNo}/>&nbsp;&nbsp;
+            <Input placeholder="Student no." value={this.state.student_no} onChange={this.handleStudentNo}/>&nbsp;&nbsp;
             <Input placeholder="Last Name" value={this.state.last_name} onChange={this.handleLastName}/>&nbsp;&nbsp;
             <Input placeholder="First Name" value={this.state.first_name} onChange={this.handleFirstName}/>&nbsp;&nbsp;
             <Input placeholder="College" value={this.state.college} onChange={this.handleCollege}/><br/><br/>
@@ -126,7 +187,7 @@ class Add extends Component {
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-            {this.state.dataset.map((item,index)=>{
+            {dataset.map((item,index)=>{
                 return(<Table.Row key={index}>
                     <Table.Cell>{item.course_no}</Table.Cell>
                     <Table.Cell>{item.student_no}</Table.Cell>
@@ -138,6 +199,7 @@ class Add extends Component {
                     <Table.Cell>{item.instructor}</Table.Cell>
                     <Table.Cell>{item.remove_date}</Table.Cell>
                     <Table.Cell>{item.remarks}</Table.Cell>
+                    <Table.Cell><Delete index={index} component={this}/></Table.Cell>
                 </Table.Row>)
             })}
             </Table.Body>
