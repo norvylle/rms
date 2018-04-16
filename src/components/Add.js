@@ -3,6 +3,8 @@ import {Button,Input,Table,Form} from 'semantic-ui-react';
 
 const autoBind = require('auto-bind');
 
+var dataset = []
+
 const initialState  = {
             course_no:"",
             student_no:"",
@@ -14,7 +16,6 @@ const initialState  = {
             instructor:"",
             remove_date:"",
             remarks:"",
-            dataset:[],
             rowOptions:[
                     {key:'course_no', text:'Course Number', value:'course_no'},
                     {key:'student_no', text:'Student Number', value:'student_no'},
@@ -26,8 +27,33 @@ const initialState  = {
                     {key:'instructor', text:'Instructor', value:'instructor'},
                     {key:'remove_date', text:'Remove Date', value:'remove_date'},
                     {key:'remarks', text:'Remarks', value:'remarks'},
+                    {key:'delete', text:'Delete', value:'delete'},
             ]
         }
+
+class Delete extends Component{
+    constructor(props){
+        super(props)
+        this.state={
+            index:this.props.index,
+            component:this.props.component
+        }
+        autoBind(this)
+    }
+
+    handleClick(){
+        dataset.splice(this.state.index,1)
+        this.state.component.reset()
+    }
+
+    render(){
+        return(
+            <div>
+                <Button icon="delete" onClick={this.handleClick}></Button>
+            </div>
+        )
+    }
+}
 
 class Add extends Component {
 
@@ -44,7 +70,6 @@ class Add extends Component {
             instructor:"",
             remove_date:"",
             remarks:"",
-            dataset:[],
             rowOptions:[
                     {key:'course_no', text:'Course Number', value:'course_no'},
                     {key:'student_no', text:'Student Number', value:'student_no'},
@@ -56,6 +81,7 @@ class Add extends Component {
                     {key:'instructor', text:'Instructor', value:'instructor'},
                     {key:'remove_date', text:'Remove Date', value:'remove_date'},
                     {key:'remarks', text:'Remarks', value:'remarks'},
+                    {key:'delete', text:'Delete', value:'delete'},
             ]
         }
         autoBind(this);
@@ -86,8 +112,8 @@ class Add extends Component {
         initialState.college = this.state.college
         initialState.remove_date = this.state.remove_date
         initialState.grade = "4.0-"
-        initialState.dataset = this.state.dataset
         this.setState(initialState)
+        this.forceUpdate()
     }
 
     handleInsert(e){
@@ -105,9 +131,8 @@ class Add extends Component {
                 remarks:this.state.remarks
             }
 
-        this.state.dataset.push(data)
+        dataset.push(data)
         this.reset()
-        this.forceUpdate()
         }
         else{
             alert("Please specify missing field/s !")
@@ -115,7 +140,6 @@ class Add extends Component {
     }
 
     handleInsertAll(){
-        var dataset = this.state.dataset
         if(dataset[0] !== undefined){
             dataset.forEach(function(item,index,array) {
                 fetch(`http://`+window.location.hostname+`:3001/insert?state=${encodeURIComponent(JSON.stringify(item))}`)
@@ -123,7 +147,8 @@ class Add extends Component {
                 .then((result) => {})
             });
         alert("Insert Successful!")
-        this.setState({dataset:[]})
+        dataset = []
+        this.forceUpdate()
         }
         else{
             alert("Empty Table!")
@@ -162,7 +187,7 @@ class Add extends Component {
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-            {this.state.dataset.map((item,index)=>{
+            {dataset.map((item,index)=>{
                 return(<Table.Row key={index}>
                     <Table.Cell>{item.course_no}</Table.Cell>
                     <Table.Cell>{item.student_no}</Table.Cell>
@@ -174,6 +199,7 @@ class Add extends Component {
                     <Table.Cell>{item.instructor}</Table.Cell>
                     <Table.Cell>{item.remove_date}</Table.Cell>
                     <Table.Cell>{item.remarks}</Table.Cell>
+                    <Table.Cell><Delete index={index} component={this}/></Table.Cell>
                 </Table.Row>)
             })}
             </Table.Body>
