@@ -1,2 +1,0 @@
-# rms
-Records Management System
