@@ -1,0 +1,24 @@
+{
+  "name": "rms",
+  "version": "1.0.0",
+  "description": "Records Management System",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run-frontend": "cd frontend && npm start",
+    "run-backend": "cd backend && node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/norvylle/rms.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/norvylle/rms/issues"
+  },
+  "homepage": "https://github.com/norvylle/rms#readme",
+  "dependencies": {
+    "npm": "^6.3.0"
+  }
+}
