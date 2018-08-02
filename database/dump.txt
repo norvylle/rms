@@ -1,1 +1,0 @@
-mysqldump -uroot -x --databases records > db.sql
