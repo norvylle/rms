@@ -1,30 +1,25 @@
 {
   "name": "rms",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "auto-bind": "^1.2.0",
-    "body-parser": "^1.18.2",
-    "bootstrap": "^4.0.0",
-    "cors": "^2.8.4",
-    "express": "^4.16.2",
-    "jquery": "^3.3.1",
-    "mariasql": "^0.2.6",
-    "method-override": "^2.3.10",
-    "mysql": "^2.15.0",
-    "npm": "^5.7.1",
-    "react": "^16.2.0",
-    "react-bootstrap": "^0.32.1",
-    "react-dom": "^16.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.1",
-    "semantic-ui": "^2.3.0",
-    "semantic-ui-react": "^0.78.3"
-  },
+  "version": "1.0.0",
+  "description": "Records Management System",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run-frontend": "cd frontend && npm start",
+    "run-backend": "cd backend && node server.js",
+    "start": "npm run run-frontend && npm run run-backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/norvylle/rms.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/norvylle/rms/issues"
+  },
+  "homepage": "https://github.com/norvylle/rms#readme",
+  "dependencies": {
+    "npm": "^6.3.0"
   }
 }
